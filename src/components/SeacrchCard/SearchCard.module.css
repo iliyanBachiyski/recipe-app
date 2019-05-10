@@ -1,0 +1,15 @@
+.Card {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid white;
+  padding: 0 10px 10px 10px;
+  color: white;
+  margin-bottom: 2%;
+}
+
+.CardLabel {
+  margin-bottom: 10px;
+  font-size: 20pt;
+  font-family: cursive;
+  border-bottom: 2px solid white;
+}

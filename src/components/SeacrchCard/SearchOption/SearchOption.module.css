@@ -1,0 +1,10 @@
+.Option {
+}
+
+.Option .Label {
+  font-size: 17pt;
+}
+
+.Option .Checkbox {
+  margin: 0.4rem;
+}
