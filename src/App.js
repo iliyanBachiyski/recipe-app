@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SearchBar from "./components/SearchBar/SearchBar";
 import classes from "./App.module.css";
 import Button from "./components/Button/Button";
+import CardContainer from "./components/CardContainer/CardContainer";
 
 class App extends Component {
   state = {
@@ -14,8 +15,11 @@ class App extends Component {
   render() {
     return (
       <div className={classes.App}>
-        <SearchBar inputConfig={this.state.searchBarConfig.inputConf} />
-        <Button label="Search" />
+        <div className={classes.Wrapper}>
+          <SearchBar inputConfig={this.state.searchBarConfig.inputConf} />
+          <Button label="Search" />
+          <CardContainer />
+        </div>
       </div>
     );
   }
