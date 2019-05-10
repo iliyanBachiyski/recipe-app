@@ -12,9 +12,52 @@ class App extends Component {
       inputConf: {
         placeholder: "Ingredients..."
       }
+    },
+    searchCards: {
+      diet: {
+        label: "Diet",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        selectedOptions: {}
+      },
+      health: {
+        label: "Health",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        selectedOptions: {}
+      },
+      dishType: {
+        label: "Dish Type",
+        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        selectedOptions: {}
+      }
     }
   };
+  selectOptionsHandler = (value, selectedOptions) => {
+    if (value === "dish type") {
+      value = "dishType";
+    }
+    this.setState(prevState => {
+      return {
+        searchCards: {
+          diet: { ...prevState.searchCards.diet },
+          health: { ...prevState.searchCards.health },
+          dishType: { ...prevState.searchCards.dishType },
+          [value]: { ...prevState.searchCards[value], selectedOptions }
+        }
+      };
+    });
+  };
   render() {
+    const searchCards = [];
+    for (let key in this.state.searchCards) {
+      searchCards.push(
+        <SearchCard
+          title={this.state.searchCards[key].label}
+          options={this.state.searchCards[key].options}
+          selectOptions={this.selectOptionsHandler}
+          key={key}
+        />
+      );
+    }
     return (
       <div className={classes.App}>
         <div className={classes.Wrapper}>
@@ -24,11 +67,7 @@ class App extends Component {
             render={() => (
               <React.Fragment>
                 <SearchBar inputConfig={this.state.searchBarConfig.inputConf} />
-                <div className={classes.SearchCardContainer}>
-                  <SearchCard />
-                  <SearchCard />
-                  <SearchCard />
-                </div>
+                <div className={classes.SearchCardContainer}>{searchCards}</div>
                 <Button label="Search" />
               </React.Fragment>
             )}
