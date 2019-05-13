@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import SearchBar from "./components/SearchBar/SearchBar";
 import classes from "./App.module.css";
 import Button from "./components/Button/Button";
@@ -43,7 +44,8 @@ class App extends Component {
         options: ["Dinner", "Dessert"],
         selectedOptions: {}
       }
-    }
+    },
+    recipes: []
   };
   selectOptionsHandler = (value, selectedOptions) => {
     if (value === "dish type") {
@@ -88,7 +90,12 @@ class App extends Component {
         .concat(dietsLabel)
         .concat(dishTypesLabel)
         .concat(healthLabel);
-      console.log(url);
+      fetch(url)
+        .then(resp => resp.json())
+        .then(data => {
+          this.setState({ recipes: data.hits });
+          this.props.history.push("/recipes");
+        });
     } else {
       console.log("Error");
     }
@@ -167,11 +174,14 @@ class App extends Component {
               </React.Fragment>
             )}
           />
-          <Route path="/recipes" render={() => <CardContainer />} />
+          <Route
+            path="/recipes"
+            render={() => <CardContainer recipes={this.state.recipes} />}
+          />
         </div>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

@@ -4,13 +4,19 @@ import classes from "./CardContainer.module.css";
 
 class CardContainer extends Component {
   render() {
-    return (
-      <div className={classes.CardContainer}>
-        <Card />
-        <Card />
-        <Card />
-      </div>
-    );
+    let cards = null;
+    if (this.props.recipes.length > 0) {
+      cards = (
+        <React.Fragment>
+          {this.props.recipes.map(record => (
+            <Card key={record.recipe.uri} recipe={record.recipe} />
+          ))}
+        </React.Fragment>
+      );
+    } else {
+      cards = <div>No such info</div>;
+    }
+    return <div className={classes.CardContainer}>{cards}</div>;
   }
 }
 
