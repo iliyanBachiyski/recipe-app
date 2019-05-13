@@ -1,5 +1,5 @@
 const APP_ID = "aa9307be";
-const APP_KEY = "5923d149d123e27fb4e02799a5445087";
+const APP_KEY = "a3be6c487ccd006ad1d4cbd4370b96c5";
 export const VALUE_PATTERN = "$[value]";
 export const DIET_PATTERN = `&diet=${VALUE_PATTERN}`;
 export const HEALTH_PATTERN = `&health=${VALUE_PATTERN}`;
