@@ -257,17 +257,21 @@ class App extends Component {
                 {error}
                 <div className={classes.SearchCardContainer}>{searchCards}</div>
                 {spinner}
-                <Button
-                  label="Search"
-                  click={this.submitSearchHandler}
-                  disabled={this.state.searchBarConfig.value === ""}
-                />
+                <div className={classes.ButtonContainer}>
+                  <Button
+                    label="Search"
+                    click={this.submitSearchHandler}
+                    disabled={this.state.searchBarConfig.value === ""}
+                  />
+                </div>
               </React.Fragment>
             )}
           />
           <Route
             path="/recipes"
-            render={() => <CardContainer recipes={this.state.recipes} />}
+            render={props => (
+              <CardContainer {...props} recipes={this.state.recipes} />
+            )}
           />
         </div>
       </div>

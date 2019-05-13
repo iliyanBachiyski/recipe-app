@@ -4,3 +4,12 @@
   justify-content: space-around;
   margin-top: 2%;
 }
+
+.CardContainer .BackContainer {
+  width: 100%;
+  margin-bottom: 1%;
+}
+
+.CardContainer .BackContainer button {
+  float: left;
+}
