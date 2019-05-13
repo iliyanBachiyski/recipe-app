@@ -3,7 +3,6 @@ import Button from "../../Button/Button";
 import classes from "./Card.module.css";
 
 const Card = props => {
-  console.log("[Card:Recipe]: ", props.recipe);
   const { recipe } = props;
   return (
     <div className={classes.Card}>

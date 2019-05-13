@@ -7,6 +7,7 @@ import SearchCard from "./components/SeacrchCard/SearchCard";
 import Spinner from "./components/Spinner/Spinner";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import CardContainer from "./components/CardContainer/CardContainer";
+import data from "./dataResponse";
 import {
   VALUE_PATTERN,
   DIET_PATTERN,
@@ -102,7 +103,27 @@ class App extends Component {
         .concat(dietsLabel)
         .concat(dishTypesLabel)
         .concat(healthLabel);
-      this.fetchData(url);
+      this.setState({
+        recipes: data.hits,
+        isLoading: false,
+        error: {
+          hasError: false,
+          errorMessage: null,
+          label: null
+        }
+      });
+      if (data.hits.length > 0) {
+        this.props.history.push("/recipes");
+      } else {
+        this.setState({
+          error: {
+            hasError: true,
+            errorMessage: "Sorry, No Results...",
+            label: "Warning"
+          }
+        });
+      }
+      // this.fetchData(url);
     } else {
       this.setState({
         error: {
