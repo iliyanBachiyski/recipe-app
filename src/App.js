@@ -103,7 +103,7 @@ class App extends Component {
         .concat(dietsLabel)
         .concat(dishTypesLabel)
         .concat(healthLabel);
-      this.setState({
+      /*       this.setState({
         recipes: data.hits,
         isLoading: false,
         error: {
@@ -122,8 +122,8 @@ class App extends Component {
             label: "Warning"
           }
         });
-      }
-      // this.fetchData(url);
+      } */
+      this.fetchData(url);
     } else {
       this.setState({
         error: {

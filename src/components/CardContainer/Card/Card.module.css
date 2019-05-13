@@ -10,12 +10,7 @@
 .CardLabel {
   margin-bottom: 10px;
   font-size: 18pt;
-  font-family: cursive;
 }
-
-.CardButtons {
-}
-
 .Card button {
   width: 50%;
   margin-top: 2%;

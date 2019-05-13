@@ -1,0 +1,37 @@
+.FullInfoContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 3%;
+  width: 60%;
+  background-color: rgba(33, 160, 38, 0.8);
+  color: white;
+}
+
+.FirstLineInfo p {
+  margin: auto;
+}
+
+.LabelParagraph {
+  font-size: 25pt;
+}
+
+.MiddLineInfo {
+  display: flex;
+  flex-direction: row;
+  margin-top: 2%;
+  margin-bottom: 1%;
+}
+
+.MiddLineInfo div {
+  flex: 1;
+  margin-bottom: 2%;
+}
+
+.MiddLineInfo .Title {
+  border-bottom: 1.3px solid white;
+}
+
+.MiddLineInfo span:after {
+  content: "\A";
+  white-space: pre;
+}

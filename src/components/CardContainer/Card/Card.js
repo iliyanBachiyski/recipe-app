@@ -9,8 +9,16 @@ const Card = props => {
       <label className={classes.CardLabel}>{recipe.label}</label>
       <img className={classes.CardImage} src={recipe.image} alt="label" />
       <div className={classes.CardButtons}>
-        <Button label="Details" />
-        <Button label="Source" />
+        <Button
+          label="Details"
+          click={() => {
+            props.onDetailsClicked(recipe.index);
+          }}
+        />
+        <Button
+          label="Source"
+          click={() => window.open(recipe.shareAs, "_blank")}
+        />
       </div>
     </div>
   );
