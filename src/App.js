@@ -5,6 +5,7 @@ import classes from "./App.module.css";
 import Button from "./components/Button/Button";
 import SearchCard from "./components/SeacrchCard/SearchCard";
 import Spinner from "./components/Spinner/Spinner";
+import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 import CardContainer from "./components/CardContainer/CardContainer";
 import {
   VALUE_PATTERN,
@@ -47,7 +48,12 @@ class App extends Component {
       }
     },
     recipes: [],
-    isLoading: false
+    isLoading: false,
+    error: {
+      hasError: false,
+      errorMessage: null,
+      label: null
+    }
   };
   selectOptionsHandler = (value, selectedOptions) => {
     if (value === "dish type") {
@@ -67,7 +73,10 @@ class App extends Component {
 
   submitSearchHandler = () => {
     if (this.state.searchBarConfig.value !== "") {
-      this.setState({ isLoading: true });
+      this.setState({
+        isLoading: true,
+        error: { hasError: false, errorMessage: null, label: null }
+      });
       const selectedDietOptions = this.state.searchCards["diet"]
         .selectedOptions;
       const selectedDishTypeOptions = this.state.searchCards["dishType"]
@@ -93,19 +102,54 @@ class App extends Component {
         .concat(dietsLabel)
         .concat(dishTypesLabel)
         .concat(healthLabel);
-      fetch(url)
-        .then(resp => resp.json())
-        .then(data => {
-          this.setState({ recipes: data.hits, isLoading: false });
-          this.props.history.push("/recipes");
-        })
-        .catch(err => {
-          this.setState({ isLoading: false });
-          console.log("[App: Something went wrong!]: ", err);
-        });
+      this.fetchData(url);
     } else {
-      console.log("Error");
+      this.setState({
+        error: {
+          hasError: true,
+          errorMessage: "Empty field...!",
+          label: "Danger"
+        }
+      });
     }
+  };
+
+  fetchData = url => {
+    fetch(url)
+      .then(resp => resp.json())
+      .then(data => {
+        this.setState({
+          recipes: data.hits,
+          isLoading: false,
+          error: {
+            hasError: false,
+            errorMessage: null,
+            label: null
+          }
+        });
+        if (data.hits.length > 0) {
+          this.props.history.push("/recipes");
+        } else {
+          this.setState({
+            error: {
+              hasError: true,
+              errorMessage: "Sorry, No Results...",
+              label: "Warning"
+            }
+          });
+        }
+      })
+      .catch(err => {
+        this.setState({
+          isLoading: false,
+          error: {
+            hasError: true,
+            errorMessage: err.toString(),
+            label: "Danger"
+          }
+        });
+        console.log("[App: Something went wrong!]: ", err);
+      });
   };
 
   getSearchLabelByOption = (label, options) => {
@@ -167,6 +211,15 @@ class App extends Component {
     if (this.state.isLoading) {
       spinner = <Spinner />;
     }
+    let error = null;
+    if (this.state.error.hasError) {
+      error = (
+        <ErrorMessage
+          errorMessage={this.state.error.errorMessage}
+          label={this.state.error.label}
+        />
+      );
+    }
     return (
       <div className={classes.App}>
         <div className={classes.Wrapper}>
@@ -180,6 +233,7 @@ class App extends Component {
                   value={this.state.searchBarConfig.value}
                   onChangeHadler={this.onSearchChangeHandler}
                 />
+                {error}
                 <div className={classes.SearchCardContainer}>{searchCards}</div>
                 {spinner}
                 <Button

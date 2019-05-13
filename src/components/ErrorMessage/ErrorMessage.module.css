@@ -1,0 +1,17 @@
+.Alert {
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+
+.Alert div {
+  width: 51%;
+}
+
+.Danger {
+  background-color: #f44336;
+}
+
+.Warning {
+  background-color: #eeeb2c;
+}
