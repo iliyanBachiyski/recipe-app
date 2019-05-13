@@ -4,6 +4,13 @@ import classes from "./App.module.css";
 import Button from "./components/Button/Button";
 import SearchCard from "./components/SeacrchCard/SearchCard";
 import CardContainer from "./components/CardContainer/CardContainer";
+import {
+  VALUE_PATTERN,
+  DIET_PATTERN,
+  HEALTH_PATTERN,
+  DISH_PATTERN,
+  SEARCH_BY_NAME_URL
+} from "./API_CONFIG";
 import { Route } from "react-router-dom";
 
 class App extends Component {
@@ -11,22 +18,29 @@ class App extends Component {
     searchBarConfig: {
       inputConf: {
         placeholder: "Ingredients..."
-      }
+      },
+      value: ""
     },
     searchCards: {
       diet: {
         label: "Diet",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        options: [
+          "Balanced",
+          "High-Fiber",
+          "High-Protein",
+          "Low-Carb",
+          "Low-Fat"
+        ],
         selectedOptions: {}
       },
       health: {
         label: "Health",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        options: ["Vegetarian", "Vegan", "Gluten-free", "Fat-free", "Paleo"],
         selectedOptions: {}
       },
       dishType: {
         label: "Dish Type",
-        options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        options: ["Dinner", "Dessert"],
         selectedOptions: {}
       }
     }
@@ -46,6 +60,83 @@ class App extends Component {
       };
     });
   };
+
+  submitSearchHandler = () => {
+    if (this.state.searchBarConfig.value !== "") {
+      const selectedDietOptions = this.state.searchCards["diet"]
+        .selectedOptions;
+      const selectedDishTypeOptions = this.state.searchCards["dishType"]
+        .selectedOptions;
+      const selectedHealthOptions = this.state.searchCards["health"]
+        .selectedOptions;
+
+      const diets = this.getSelectedOptions(selectedDietOptions);
+      const dishTypes = this.getSelectedOptions(selectedDishTypeOptions);
+      const health = this.getSelectedOptions(selectedHealthOptions);
+
+      const dietsLabel = this.getSearchLabelByOption("diet", diets);
+      const dishTypesLabel = this.getSearchLabelByOption(
+        "dishTypes",
+        dishTypes
+      );
+      const healthLabel = this.getSearchLabelByOption("health", health);
+      let url = SEARCH_BY_NAME_URL.replace(
+        VALUE_PATTERN,
+        this.state.searchBarConfig.value
+      );
+      url = url
+        .concat(dietsLabel)
+        .concat(dishTypesLabel)
+        .concat(healthLabel);
+      console.log(url);
+    } else {
+      console.log("Error");
+    }
+  };
+
+  getSearchLabelByOption = (label, options) => {
+    let searchLabelPattern = null;
+    let fullSearchLabel = "";
+    switch (label) {
+      case "diet":
+        searchLabelPattern = DIET_PATTERN;
+        break;
+      case "dishTypes":
+        searchLabelPattern = DISH_PATTERN;
+        break;
+      case "health":
+        searchLabelPattern = HEALTH_PATTERN;
+        break;
+      default:
+        searchLabelPattern = "";
+    }
+    options.forEach(option => {
+      const valueToConcat = searchLabelPattern.replace(VALUE_PATTERN, option);
+      fullSearchLabel = fullSearchLabel.concat(valueToConcat);
+    });
+    return fullSearchLabel;
+  };
+
+  getSelectedOptions = availableOptions => {
+    const options = [];
+    for (let key in availableOptions) {
+      if (availableOptions[key]) {
+        options.push(key.toLowerCase());
+      }
+    }
+    return options;
+  };
+
+  onSearchChangeHandler = e => {
+    const newValue = e.target.value;
+    this.setState({
+      searchBarConfig: {
+        inputConf: { ...this.state.searchBarConfig.inputConf },
+        value: newValue
+      }
+    });
+  };
+
   render() {
     const searchCards = [];
     for (let key in this.state.searchCards) {
@@ -66,9 +157,13 @@ class App extends Component {
             exact
             render={() => (
               <React.Fragment>
-                <SearchBar inputConfig={this.state.searchBarConfig.inputConf} />
+                <SearchBar
+                  inputConfig={this.state.searchBarConfig.inputConf}
+                  value={this.state.searchBarConfig.value}
+                  onChangeHadler={this.onSearchChangeHandler}
+                />
                 <div className={classes.SearchCardContainer}>{searchCards}</div>
-                <Button label="Search" />
+                <Button label="Search" click={this.submitSearchHandler} />
               </React.Fragment>
             )}
           />
