@@ -182,7 +182,11 @@ class App extends Component {
                 />
                 <div className={classes.SearchCardContainer}>{searchCards}</div>
                 {spinner}
-                <Button label="Search" click={this.submitSearchHandler} />
+                <Button
+                  label="Search"
+                  click={this.submitSearchHandler}
+                  disabled={this.state.searchBarConfig.value === ""}
+                />
               </React.Fragment>
             )}
           />

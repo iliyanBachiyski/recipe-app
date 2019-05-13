@@ -11,3 +11,8 @@
   color: white;
   font-size: 15pt;
 }
+
+.Button button:disabled {
+  background-color: #949a94;
+  color: #524d4d;
+}
