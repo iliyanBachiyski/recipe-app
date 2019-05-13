@@ -4,6 +4,7 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import classes from "./App.module.css";
 import Button from "./components/Button/Button";
 import SearchCard from "./components/SeacrchCard/SearchCard";
+import Spinner from "./components/Spinner/Spinner";
 import CardContainer from "./components/CardContainer/CardContainer";
 import {
   VALUE_PATTERN,
@@ -45,7 +46,8 @@ class App extends Component {
         selectedOptions: {}
       }
     },
-    recipes: []
+    recipes: [],
+    isLoading: false
   };
   selectOptionsHandler = (value, selectedOptions) => {
     if (value === "dish type") {
@@ -65,6 +67,7 @@ class App extends Component {
 
   submitSearchHandler = () => {
     if (this.state.searchBarConfig.value !== "") {
+      this.setState({ isLoading: true });
       const selectedDietOptions = this.state.searchCards["diet"]
         .selectedOptions;
       const selectedDishTypeOptions = this.state.searchCards["dishType"]
@@ -93,8 +96,12 @@ class App extends Component {
       fetch(url)
         .then(resp => resp.json())
         .then(data => {
-          this.setState({ recipes: data.hits });
+          this.setState({ recipes: data.hits, isLoading: false });
           this.props.history.push("/recipes");
+        })
+        .catch(err => {
+          this.setState({ isLoading: false });
+          console.log("[App: Something went wrong!]: ", err);
         });
     } else {
       console.log("Error");
@@ -156,6 +163,10 @@ class App extends Component {
         />
       );
     }
+    let spinner = null;
+    if (this.state.isLoading) {
+      spinner = <Spinner />;
+    }
     return (
       <div className={classes.App}>
         <div className={classes.Wrapper}>
@@ -170,6 +181,7 @@ class App extends Component {
                   onChangeHadler={this.onSearchChangeHandler}
                 />
                 <div className={classes.SearchCardContainer}>{searchCards}</div>
+                {spinner}
                 <Button label="Search" click={this.submitSearchHandler} />
               </React.Fragment>
             )}
