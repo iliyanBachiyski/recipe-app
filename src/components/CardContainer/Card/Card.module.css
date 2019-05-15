@@ -1,15 +1,22 @@
 .Card {
   display: flex;
+  width: 20%;
   flex-direction: column;
   border: 3px solid white;
   padding: 0 10px 10px 10px;
   color: white;
-  margin-bottom: 2%;
+  margin-top: 2%;
+  align-items: center;
 }
 
 .CardLabel {
-  margin-bottom: 10px;
+  width: 100%;
+  height: 12%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   font-size: 18pt;
+  display: inline-block;
 }
 .Card button {
   width: 50%;
@@ -17,5 +24,17 @@
 }
 
 .Card img {
+  width: 300px;
+  height: 300px;
+}
+
+.CardButtons {
+  display: flex;
+  flex-direction: column;
+  height: 20%;
   width: 100%;
+}
+
+.CardButtons div {
+  margin-bottom: 2%;
 }
